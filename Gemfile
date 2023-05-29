@@ -4,6 +4,8 @@ ruby '3.2.2'
 source 'https://rubygems.org'
 
 gem 'sorbet-runtime'
+gem 'zeitwerk'
+gem 'nokogiri'
 
 group :test, :development do
   gem 'pry'
@@ -11,5 +13,4 @@ group :test, :development do
   gem 'rubocop'
   gem 'sorbet'
   gem 'tapioca'
-  gem 'zeitwerk'
 end

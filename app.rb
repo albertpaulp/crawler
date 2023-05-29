@@ -12,4 +12,4 @@ loader = Zeitwerk::Loader.new
 loader.push_dir('src/service/')
 loader.setup
 
-puts 'Hello world!'
+starting_url = URI.parse(ARGV[0])
