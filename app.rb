@@ -16,12 +16,14 @@ executor = Concurrent::ThreadPoolExecutor.new(
 
 starting_url = URI.parse(ARGV[0])
 
-Crawler.new(url: starting_url, visited:, executor:).call
+benchmark = Benchmark.measure do
+  Crawler.new(url: starting_url, visited:, executor:).call
 
-executor.shutdown
-executor.wait_for_termination
+  executor.shutdown
+  executor.wait_for_termination
+end
 
-puts "Completed crawling, found #{visited.count} unique URLs"
-visited.each do |url|
-  puts url
+puts "Completed crawling in #{benchmark.real} seconds, found #{visited.count} unique URLs"
+visited.each_with_index do |url, index|
+  puts "#{index}. #{url}"
 end

@@ -1,5 +1,5 @@
 # Crawler
-
+A simple web crawler to crawl all links in the same domain.
 ## Problem statement
 ```
 Write a simple web crawler in a programming language you're familiar with. Given a starting URL, the crawler should visit each URL it finds on the same domain. It should print each URL visited, and a list of links found on that page. The crawler should be limited to one subdomain - so when you start with *https://monzo.com/*, it would crawl all pages on the monzo.com website, but not follow external links, for example to facebook.com or community.monzo.com.
@@ -16,6 +16,21 @@ We would like to see your own implementation of a web crawler. Please do not use
 - Run the application by `ruby app.rb https://monzo.com/`
 
 - Run test suite with `bundle exec rspec .`
+
+## Sample response
+
+```
+thread 1400: Crawling https://monzo.com/blog/2019/08/22/strong-customer-authentication
+thread 1400: Found 1 URLs
+thread 1400: Found https://monzo.com/blog/2019/08/22/strong-customer-authentication
+thread 1400: ===================================
+.......
+Completed crawling, found 70 unique URLs
+https://monzo.com
+https://monzo.com/about/
+............
+https://monzo.com/blog/2019/08/22/strong-customer-authentication
+```
 
 ## Design decisions
 
@@ -50,5 +65,5 @@ We can use a single app/process to do the crawling. We could use OS threads for 
 
 ### Caveats
 
-- Even though we use concurrency, standard Ruby interpreter(YARV) comes with Global interpreter lock which prevents parallel execution. Even though threads won't run parallelly even with multiple cores, we still can make use of concurrency for performance improvement.
+- Even though we use concurrency, standard Ruby interpreter(YARV) comes with Global interpreter lock(GIL) which prevents parallel execution. That means threads won't run parallelly even with multiple available cores, we still can make use of concurrency for performance improvement. We could run the code truly parallel using interpreters like JRuby/TruffleRuby which does not have GIL.
 - I have added logging while each thread fetch web pages, this logs won't be in order because of unordered thread execution pattern. You can verify producing thread of each log by thread id in the beginning of the log line. I have added a bit of code to print unique URLs once entire execution is completed.
