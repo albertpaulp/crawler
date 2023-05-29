@@ -7,6 +7,7 @@ require 'sorbet-runtime'
 require 'uri'
 require 'zeitwerk'
 require 'nokogiri'
+require 'concurrent'
 
 loader = Zeitwerk::Loader.new
 loader.push_dir('src/service/')

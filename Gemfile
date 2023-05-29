@@ -6,6 +6,7 @@ source 'https://rubygems.org'
 gem 'sorbet-runtime'
 gem 'zeitwerk'
 gem 'nokogiri'
+gem 'concurrent-ruby'
 
 group :test, :development do
   gem 'pry'

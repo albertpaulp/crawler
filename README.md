@@ -51,3 +51,4 @@ We can use a single app/process to do the crawling. We could use OS threads for 
 ### Caveats
 
 - Even though we use concurrency, standard Ruby interpreter(YARV) comes with Global interpreter lock which prevents parallel execution. Even though threads won't run parallelly even with multiple cores, we still can make use of concurrency for performance improvement.
+- I have added logging while each thread fetch web pages, this logs won't be in order because of unordered thread execution pattern. You can verify producing thread of each log by thread id in the beginning of the log line. I have added a bit of code to print unique URLs once entire execution is completed.
