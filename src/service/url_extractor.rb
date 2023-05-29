@@ -6,10 +6,12 @@ class UrlExtractor
   extend T::Sig
   ALLOWED_DOMAIN = 'monzo.com'
 
+  sig { params(url: URI).void }
   def initialize(url:)
     @url = url
   end
 
+  sig { returns(T::Array[URI]) }
   def call
     response_body = request_body
 
@@ -24,6 +26,7 @@ class UrlExtractor
 
   private
 
+  sig { returns(String) }
   def request_body
     http = Net::HTTP.new(@url.host, @url.port)
     http.use_ssl = true

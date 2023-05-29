@@ -3,10 +3,10 @@
 ruby '3.2.2'
 source 'https://rubygems.org'
 
+gem 'concurrent-ruby'
+gem 'nokogiri'
 gem 'sorbet-runtime'
 gem 'zeitwerk'
-gem 'nokogiri'
-gem 'concurrent-ruby'
 
 group :test, :development do
   gem 'pry'
