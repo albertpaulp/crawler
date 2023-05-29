@@ -5,9 +5,9 @@ require './spec/spec_helper'
 describe Crawler do
   before do
     @starting_url = URI.parse('https://monzo.com')
-    @visited = Set.new
+    @visited = Concurrent::Set.new
     @executor = double('executor')
-    @crawler = Crawler.new(url: @starting_url, visited: @visited, executor: @executor)
+    @crawler = Crawler.new(url: @starting_url, visited: @visited, executor: @executor, host: @starting_url.host)
     allow(@crawler).to receive(:extracted_urls).and_return([URI.parse('https://monzo.com/careers')])
   end
 

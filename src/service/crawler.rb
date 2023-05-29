@@ -5,11 +5,12 @@
 class Crawler
   extend T::Sig
 
-  sig { params(url: URI, visited: Concurrent::Set, executor: Concurrent::ThreadPoolExecutor).void }
-  def initialize(url:, visited:, executor:)
+  sig { params(url: URI, visited: Concurrent::Set, executor: Concurrent::ThreadPoolExecutor, host: String).void }
+  def initialize(url:, visited:, executor:, host:)
     @url = url
     @visited = visited
     @executor = executor
+    @host = host
   end
 
   sig { void }
@@ -21,7 +22,7 @@ class Crawler
       puts "thread #{Thread.current.object_id}: Found #{new_url}"
       next if @visited.include?(new_url)
 
-      @executor.post { Crawler.new(url: new_url, visited: @visited, executor: @executor).call }
+      @executor.post { Crawler.new(url: new_url, visited: @visited, executor: @executor, host: @host).call }
     end
     puts "thread #{Thread.current.object_id}: ==================================="
   end
@@ -30,7 +31,7 @@ class Crawler
 
   sig { returns(T::Array[URI]) }
   def extracted_urls
-    @extracted_urls ||= UrlExtractor.new(url: @url).call
+    @extracted_urls ||= UrlExtractor.new(url: @url, host: @host).call
   end
 
   sig { void }

@@ -12,9 +12,15 @@ describe UrlExtractor do
     end
 
     it 'return list of urls found in passed in URL' do
-      response = UrlExtractor.new(url: URI.parse('https://monzo.com')).call
+      response = UrlExtractor.new(url: URI.parse('https://monzo.com'), host: 'monzo.com').call
 
       expect(response).to eq([URI.parse('https://monzo.com/support')])
+    end
+
+    it 'does not return urls that are not on different host' do
+      response = UrlExtractor.new(url: URI.parse('https://monzo.com'), host: 'google.com').call
+
+      expect(response).to eq([])
     end
   end
 end

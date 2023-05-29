@@ -4,11 +4,11 @@
 # service class to fetch, parse and extract URLs from a URL
 class UrlExtractor
   extend T::Sig
-  ALLOWED_DOMAIN = 'monzo.com'
 
-  sig { params(url: URI).void }
-  def initialize(url:)
+  sig { params(url: URI, host: String).void }
+  def initialize(url:, host:)
     @url = url
+    @host = host
   end
 
   sig { returns(T::Array[URI]) }
@@ -18,7 +18,7 @@ class UrlExtractor
     all_urls = Nokogiri::HTML(response_body).css('a').map { |link| link['href'] }
     all_urls.map do |url|
       parsed = URI.parse(url)
-      parsed.host == ALLOWED_DOMAIN ? parsed : nil
+      parsed.host == @host ? parsed : nil
     rescue URI::InvalidURIError
       nil
     end.compact.uniq

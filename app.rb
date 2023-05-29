@@ -17,7 +17,7 @@ executor = Concurrent::ThreadPoolExecutor.new(
 starting_url = URI.parse(ARGV[0])
 
 benchmark = Benchmark.measure do
-  Crawler.new(url: starting_url, visited:, executor:).call
+  Crawler.new(url: starting_url, visited:, executor:, host: T.must(starting_url.host)).call
 
   executor.shutdown
   executor.wait_for_termination

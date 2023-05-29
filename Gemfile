@@ -14,4 +14,5 @@ group :test, :development do
   gem 'rubocop'
   gem 'sorbet'
   gem 'tapioca'
+  gem 'rspec-sorbet'
 end
