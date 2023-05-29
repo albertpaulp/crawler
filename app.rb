@@ -3,7 +3,7 @@
 
 require './src/initializer'
 
-# Using Set instead of Array to avoid duplicates and faster lookup
+# Using thread-safe Set instead of Array to avoid duplicates and faster lookup
 visited = Concurrent::Set.new
 
 # Using a thread pool to limit the number of threads

@@ -1,5 +1,5 @@
 # Crawler
-A simple web crawler to crawl all links in the same domain.
+A simple [web crawler](https://github.com/albertpaulp/crawler/) to crawl all links in the same domain.
 ## Problem statement
 ```
 Write a simple web crawler in a programming language you're familiar with. Given a starting URL, the crawler should visit each URL it finds on the same domain. It should print each URL visited, and a list of links found on that page. The crawler should be limited to one subdomain - so when you start with *https://monzo.com/*, it would crawl all pages on the monzo.com website, but not follow external links, for example to facebook.com or community.monzo.com.
@@ -71,4 +71,4 @@ We can use a single app/process to do the crawling. We could use OS threads for 
 - I have added logging while each thread fetch web pages, this log won't be in order because of unordered thread execution pattern. We can verify producing thread of each log by thread id in the beginning of the log line. I have added a bit of code to print unique URLs once entire execution is completed.
 - I am decided to add static and runtime type checking with Sorbet for easier code reading and reliability.
 - I haven't added integration test due to lack of time but added unit testing for service classes.
-- Current parsing recognise links by looking at <a href> tags, if a link is present in any other format, for example sitemap.xml, it's not crawled.
+- Current parsing recognise links by looking at \<a href\> tags, if a link is present in any other format, for example sitemap.xml, it's not crawled.
