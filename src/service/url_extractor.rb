@@ -5,7 +5,7 @@
 class UrlExtractor
   extend T::Sig
 
-  sig { params(url: URI, host: String).void }
+  sig { params(url: URI::Generic, host: String).void }
   def initialize(url:, host:)
     @url = url
     @host = host
@@ -30,7 +30,7 @@ class UrlExtractor
   def request_body
     http = Net::HTTP.new(@url.host, @url.port)
     http.use_ssl = true
-    path = @url.path.empty? ? '/' : @url.path
+    path = T.must(@url.path).empty? ? '/' : @url.path
     http.get(path).body
   end
 end

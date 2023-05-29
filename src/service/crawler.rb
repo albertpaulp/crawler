@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 # typed: true
 
-# service class handles crawling
+# service class handles crawling a URL and schedules new URLs for crawling in threads
 class Crawler
   extend T::Sig
 
-  sig { params(url: URI, visited: Concurrent::Set, executor: Concurrent::ThreadPoolExecutor, host: String).void }
-  def initialize(url:, visited:, executor:, host:)
+  sig do
+    params(host: String, url: URI::Generic, visited: Concurrent::Set, executor: Concurrent::ThreadPoolExecutor).void
+  end
+  def initialize(host:, url:, visited:, executor:)
     @url = url
     @visited = visited
     @executor = executor
@@ -22,14 +24,15 @@ class Crawler
       puts "thread #{Thread.current.object_id}: Found #{new_url}"
       next if @visited.include?(new_url)
 
-      @executor.post { Crawler.new(url: new_url, visited: @visited, executor: @executor, host: @host).call }
+      # Ask the executor to crawl new url on a new thread
+      @executor.post { Crawler.new(host: @host, url: new_url, visited: @visited, executor: @executor).call }
     end
     puts "thread #{Thread.current.object_id}: ==================================="
   end
 
   private
 
-  sig { returns(T::Array[URI]) }
+  sig { returns(T::Array[URI::Generic]) }
   def extracted_urls
     @extracted_urls ||= UrlExtractor.new(url: @url, host: @host).call
   end

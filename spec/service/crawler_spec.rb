@@ -19,7 +19,7 @@ describe Crawler do
       expect(@visited).to include(@starting_url)
     end
 
-    it 'calls post on executor' do
+    it 'schedules crawling on new thread for new url' do
       expect(@executor).to receive(:post).once
 
       @crawler.call

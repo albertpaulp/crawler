@@ -14,11 +14,19 @@ executor = Concurrent::ThreadPoolExecutor.new(
   fallback_policy: :caller_runs
 )
 
+# Add validation for the URL if needed.
+# For now, assuming that the URL is valid. eg. https://www.monzo.com
 starting_url = URI.parse(ARGV[0])
 
 benchmark = Benchmark.measure do
-  Crawler.new(url: starting_url, visited:, executor:, host: T.must(starting_url.host)).call
+  Crawler.new(
+    host: T.must(starting_url.host),
+    url: starting_url,
+    visited:,
+    executor:
+  ).call
 
+  # Wait for all threads to finish
   executor.shutdown
   executor.wait_for_termination
 end
