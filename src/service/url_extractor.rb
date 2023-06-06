@@ -4,6 +4,7 @@
 # service class to fetch, parse and extract URLs from a URL
 class UrlExtractor
   extend T::Sig
+  HTTPS_SCHEME = 'https://'
 
   sig { params(url: URI::Generic, host: String).void }
   def initialize(url:, host:)
@@ -15,8 +16,9 @@ class UrlExtractor
   def call
     response_body = request_body
 
-    all_urls = Nokogiri::HTML(response_body).css('a').map { |link| link['href'] }
+    all_urls = Nokogiri::HTML(response_body).css('a').map { |link| link['href'] }.compact
     all_urls.map do |url|
+      url = url[0] == '/' ? HTTPS_SCHEME + @host + url : url
       parsed = URI.parse(url)
       parsed.host == @host ? parsed : nil
     rescue URI::InvalidURIError
